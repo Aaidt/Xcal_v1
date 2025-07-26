@@ -41,6 +41,5 @@ model Room {
 
   user User[] @relation("User")
 
-  shapeId String
   shapes  Shape[]
 }

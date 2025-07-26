@@ -5,13 +5,14 @@ import { compare, hash } from "bcrypt"
 const authRouter: Router = Router();
 
 authRouter.post("/signup", async function (req:Request, res: Response) {
-    const { username, password } = req.body;
+    const { name, username, password } = req.body;
     
-    const hashedPassword = hash(password, 6);
+    const hashedPassword = await hash(password, 6);
 
     try{
         const user = await prismaClient.user.create({
             data: {
+                name,
                 username,
                 password: hashedPassword
             }
@@ -20,6 +21,7 @@ authRouter.post("/signup", async function (req:Request, res: Response) {
         if(!user){
             console.log("Failed to create the user")
             res.status(402).json({ message: "Failed to create the user" })
+            return 
         }
         res.status(200).json({ 
             message: "User created successfully.",
@@ -37,13 +39,18 @@ authRouter.post("/signin", async function (req:Request, res: Response) {
     const { username, password } = req.body;
     
     try{
-        const user = await prismaClient.user.findFirst({
-            where: { username }
-        })
+        const user = await prismaClient.user.findFirst({ where: { username } })
+
+        if(!user){
+            console.log("User not found.");
+            res.status(404).json({ message: "User not found." })
+            return 
+        }
 
         if(password !== user.password){
             console.log("Incorrect password")
             res.status(403).json({ message: "Incorrect credentials" })
+            return 
         }
 
         res.status(200).json({ 
