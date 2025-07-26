@@ -31,4 +31,89 @@ roomRouter.post("/createRoom", async function (req: Request, res: Response) {
     }
 })
 
+roomRouter.delete("/deleteRoom", async function (req: Request, res: Response) {
+    const { userId, slug } = req.body;
+
+    try{
+        const room = await prismaClient.room.delete({ where: { slug, adminId: userId } })
+
+        res.status(200).json({ message: "room deleted" + room.id  })
+    }catch(err){
+        console.log("Server error. Could not delete room.");
+        res.status(500).json({ message: "Server error. Could not delete room." })
+    }
+})
+
+roomRouter.get("/admin", async function (req: Request, res: Response) {
+    const { userId } = req.body;
+
+    try{
+        const room = await prismaClient.room.findFirst({ where: { adminId: userId }})
+
+        if(!room){
+            console.log("No rooms found")
+            res.status(404).json({ message: "No rooms found" })
+            return
+        }
+
+        res.status(200).json({ message: "room deleted" + room.id  })
+    }catch(err){
+        console.log("Server error. Could not find room.");
+        res.status(500).json({ message: "Server error. Could not find room." })
+    }
+})
+
+roomRouter.get("/visited", async function (req: Request, res: Response) {
+    const { userId } = req.body;
+
+    try{
+        const room = await prismaClient.room.findFirst({ where: { user: { some: { id: userId } } } })
+
+        if(!room){
+            console.log("No rooms found")
+            res.status(404).json({ message: "No rooms found" })
+            return
+        }
+
+        res.status(200).json({ visited: room })
+    }catch(err){
+        console.log("Server error. Could not find room.");
+        res.status(500).json({ message: "Server error. Could not find room." })
+    }
+})
+
+roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Response) {
+    const slug = req.params.slug
+    const userId = req.body;
+
+    try{
+        const room = await prismaClient.room.findFirst({
+            where: { 
+                slug, 
+                OR: [
+                    { adminId: userId },
+                    { user: { some: { id: userId } } }
+                ]
+            }
+        })
+
+        if(!room){
+            console.log("Room could not fetched")
+            res.status(403).json({ message: "Room could not fetched" })
+            return 
+        }
+        res.status(200).json({ room })
+
+    }catch(err){
+        console.log("Server error. Could not fetch the room.")
+        res.status(500).json({ message: "Server error. Could not fetch the room." })
+    }
+})
+
+roomRouter.post("/shapes/:roomId", async function (req: Request<{roomId: number}>, res: Response){
+    const { roomId } = req.params
+
+    
+})
+
 export default roomRouter
