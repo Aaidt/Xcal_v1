@@ -110,10 +110,25 @@ roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Resp
     }
 })
 
-roomRouter.post("/shapes/:roomId", async function (req: Request<{roomId: number}>, res: Response){
+roomRouter.post("/shapes/:roomId", async function (req: Request<{roomId: string}>, res: Response){
     const { roomId } = req.params
+    const shape = req.body.shape;
+    const userId = req.body.userId;
+    const shapeId = req.body.shapeId
 
-    
+    try{
+        await prismaClient.shape.upsert({
+            where: { id: shapeId },
+            create: { 
+                shape,
+                room: { connect: { id: roomId } },
+                user: { connect: { id: userId }}
+            },
+            update: { shape }
+    })
+    }catch(err){
+        res.status(500).json({ message: "Server error. could not insert shapes" })
+    }
 })
 
 export default roomRouter
