@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express"
 import cors from "cors"
 import cookieParser from "cookie-parser"  
+import authRouter from "./routes/authRouter"
+import roomRouter from "./routes/roomRouter"
 
 const app = express();
 
@@ -13,6 +15,7 @@ app.use(cookieParser())
 
 
 // routes
-
+app.use("/api/auth", authRouter);
+app.use("/api/room", roomRouter)
 
 app.listen(3000, () => { console.log("Server is listening on port 3000") });
