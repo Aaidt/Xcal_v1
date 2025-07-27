@@ -7,7 +7,7 @@ const wss = new WebSocketServer({ port: 8080 })
 interface data {
     type: "join_room" | "leave_room" | "chat",
     link?: string,
-    message?: string,
+    shape?: string,
     roomId: string
 }
 
@@ -117,7 +117,32 @@ wss.on("connection", function connect(ws, request) {
         }
 
         if(parsedData.type === "chat"){
-            
+            const roomId = parsedData.roomId;
+            const shape = parsedData.shape;
+
+            if(!shape || !roomId){
+                ws.send(JSON.stringify({ status: "Failed", message: "No shapes or roomId sent." }))
+                return
+            }
+
+            try{
+                await prismaClient.shape.create({
+                    data: { 
+                        shape, 
+                        room: { connect: { id: roomId } }
+                    }
+                })
+            }catch(err){
+                ws.send(JSON.stringify({ status: "Failed", message: "Could not save the message in the db." }))
+                console.log("Error: " + err);
+            }
+
+            users.forEach(user => {
+                if(user.rooms.includes(roomId)){
+                    user.ws.send(JSON.stringify({ type: "chat", shape }))
+                }
+            })
+
         }
 
 
