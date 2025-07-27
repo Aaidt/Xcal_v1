@@ -17,7 +17,7 @@ model User {
   updated_at DateTime @default(now())
 
   admin_of Room[]  @relation("Admin")
-  rooms    Room[]  @relation("User")
+  rooms    Room[]  @relation("Participants")
   shapes   Shape[]
 }
 
@@ -26,10 +26,18 @@ model Shape {
   shape String
 
   userId String
-  user   User   @relation(fields: [userId], references: [id])
-  
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   roomId String
-  room   Room   @relation(fields: [roomId], references: [id])
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
+}
+
+model Link {
+  id   Int    @id @default(autoincrement())
+  link String @unique
+
+  roomId String @unique
+  room   Room   @relation("Links", fields: [roomId], references: [id], onDelete: Cascade)
 }
 
 model Room {
@@ -37,9 +45,11 @@ model Room {
   slug String @unique
 
   adminId String
-  admin   User   @relation("Admin", fields: [adminId], references: [id])
+  admin   User   @relation("Admin", fields: [adminId], references: [id], onDelete: Cascade)
 
-  user User[] @relation("User")
+  link Link? @relation("Links")
 
-  shapes  Shape[]
+  user User[] @relation("Participants")
+
+  shapes Shape[]
 }
