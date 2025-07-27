@@ -4,6 +4,14 @@ import jwt from "jsonwebtoken";
 
 const wss = new WebSocketServer({ port: 8080 })
 
+interface data {
+    type: "join_room" | "leave_room" | "chat",
+    link?: string,
+    message?: string,
+    roomId: string
+}
+
+
 interface User {
     userId: string,
     ws: WebSocket,
@@ -11,7 +19,7 @@ interface User {
 }
 const users: User[] = []
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
 function verify(token: string): string | null {
 
@@ -61,7 +69,7 @@ wss.on("connection", function connect(ws, request) {
     ws.send("You are connected to the websocket server.")
 
     ws.on("message", async function message(data) {
-        let parsedData;
+        let parsedData: data;
         try {
             parsedData = JSON.parse(data.toString());
         } catch (err) {
@@ -71,7 +79,7 @@ wss.on("connection", function connect(ws, request) {
 
         const user = users.find(user => user.ws === ws);
         if (!user) {
-            ws.send("No user found...");
+            ws.send(JSON.stringify({ status: "Failed", message: "No users found..." }));
             ws.close();
             return
         }
@@ -84,16 +92,35 @@ wss.on("connection", function connect(ws, request) {
                     select: { roomId: true }
                 });
                 if (!room || !room.roomId) {
-                    ws.send("Cannot find the room corresponding to this link");
+                    ws.send(JSON.stringify({ status: "Failed", message: "Cannot find the room corresponding to this link" }));
                     return
                 }
 
                 user.rooms.push(room.roomId);
+                ws.send(JSON.stringify({ status: "Success", message: "Joined the room: " + room.roomId }));
             } catch (err) {
-                ws.send("Error in fetching the rooms.")
+                ws.send(JSON.stringify({ status: "Failed", message: "Error in fetching the rooms." }) );
                 console.error("Error is: " + err);
             }
         }
+
+        if(parsedData.type === "leave_room"){
+            const wasInRoom = user.rooms.includes(parsedData.roomId);
+            if(!wasInRoom) return;
+            
+            user.rooms = user.rooms.filter(roomId => roomId !== parsedData.roomId);
+
+            ws.send(JSON.stringify({ 
+                status: wasInRoom ? "Success" : "Failed",
+                message: wasInRoom ? "Successfully Left the room." : "you are not in this room" 
+            }))
+        }
+
+        if(parsedData.type === "chat"){
+            
+        }
+
+
     })
 })
 
