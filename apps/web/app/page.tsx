@@ -230,7 +230,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="border-b border-foreground/30"></div>
+      <div className="border-b border-foreground/30 mx-10"></div>
 
       <div className="pt-15 pb-20 bg-white dark:bg-foreground text-black flex ">
 
