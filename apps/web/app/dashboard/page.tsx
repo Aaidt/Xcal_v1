@@ -160,7 +160,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-          {loading ? <p className=" flex justify-center items-center mt-50 text-lg text-gray-500">Loading data...</p> :
+        {loading ? <p className=" flex justify-center items-center mt-50 text-lg text-gray-500">Loading data...</p> :
           <div>
             <div className="mb-8 p-5 mt-8">
             <div className="flex justify-between ">

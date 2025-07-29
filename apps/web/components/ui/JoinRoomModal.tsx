@@ -10,9 +10,10 @@ export function JoinRoomModal({
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }) {
+    const router  = useRouter()
+
   const [slug, setSlug] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
-  const router = useRouter()
 
   const handleJoin = async () => {
     if (!slug.trim()) {
@@ -64,7 +65,7 @@ export function JoinRoomModal({
               <button
                 disabled={loading}
                 onClick={handleJoin}
-                className="rounded-md font-bold px-4 py-2 text-sm bg-green-500 hover:bg-green-600 text-white duration-200 transition-all"
+                className="rounded-md font-bold px-4 py-2 text-sm bg-green-800 text-white hover:bg-green-600 cursor-pointer duration-200 transition-all"
               >
                 {loading ? "Joining..." : "Join"}
               </button>

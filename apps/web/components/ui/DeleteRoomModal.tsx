@@ -49,14 +49,14 @@ export function DeleteRoomModal({
         <div className="flex justify-center gap-3">
           <button
             onClick={() => setOpen(false)}
-            className="px-8 py-2 rounded-md bg-white/80 font-semibold hover:bg-white/90 text-black text-sm transition-all"
+            className="px-8 py-2 rounded-md bg-white/80 font-semibold hover:bg-white/90 text-black text-sm transition-all cursor-pointer"
             disabled={loading}
           >
             Cancel
           </button>
           <button
             onClick={handleDelete}
-            className={`px-8 py-2 rounded-md text-sm font-semibold transition-all duration-200 ${
+            className={`px-8 py-2 rounded-md text-sm font-semibold transition-all duration-200 cursor-pointer ${
               loading
                 ? 'bg-red-800/60 cursor-not-allowed'
                 : 'bg-red-800 hover:bg-red-700'

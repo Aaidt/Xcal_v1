@@ -94,7 +94,7 @@ export function CreateRoomModal({
         <button
           disabled={loading}
           onClick={async () => await createRoom(slug)}
-          className={`w-full py-2 rounded-md text-sm font-semibold transition-all duration-200 ${
+          className={`w-full py-2 rounded-md text-sm font-semibold transition-all duration-200 cursor-pointer ${
             loading
               ? 'bg-gray-500 text-white cursor-not-allowed'
               : 'bg-white text-black hover:bg-gray-200'
