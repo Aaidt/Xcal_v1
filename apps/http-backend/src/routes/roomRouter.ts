@@ -113,7 +113,7 @@ roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Resp
 roomRouter.post("/shapes/:roomId", async function (req: Request<{roomId: string}>, res: Response){
     const { roomId } = req.params
     const shape = req.body.shape;
-    const userId = req.body.userId;
+    // const userId = req.body.userId;
     const shapeId = req.body.shapeId
 
     try{
@@ -121,8 +121,7 @@ roomRouter.post("/shapes/:roomId", async function (req: Request<{roomId: string}
             where: { id: shapeId },
             create: { 
                 shape,
-                room: { connect: { id: roomId } },
-                user: { connect: { id: userId }}
+                room: { connect: { id: roomId } }
             },
             update: { shape }
     })

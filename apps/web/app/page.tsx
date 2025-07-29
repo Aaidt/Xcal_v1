@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Share2, Users, Layers, Star, CircleUserRound, Check, ChevronRight } from 'lucide-react'
+import { ArrowRight, Share2, Users, Layers, Check, ChevronRight } from 'lucide-react'
 import { motion } from "framer-motion"
 
 export default function Home() {
@@ -145,7 +145,7 @@ export default function Home() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}>
-          <Image className="hover:shadow-lg transition-all duration-200 hover:shadow-white/30" src="https://i.pinimg.com/736x/6e/22/33/6e22335dfb94c453afefc69cb46528f2.jpg" alt="image" width={400} height={500} />
+          <Image src="https://i.pinimg.com/736x/6e/22/33/6e22335dfb94c453afefc69cb46528f2.jpg" alt="image" width={400} height={500} />
         </motion.div>
       </div>
 
@@ -163,7 +163,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 40 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.2 }}
-              className="bg-black border border-white/30 text-white/90 p-4 w-82 rounded-md transition-all 
+              className="bg-black border border-white/30 text-white/90 p-4 w-90 rounded-md transition-all 
               duration-300 hover:shadow-lg hover:shadow-white/10 hover:-translate-y-1"
             >
               <div className="w-fit pb-6 p-4">{feature.icon}</div>
@@ -251,7 +251,7 @@ export default function Home() {
                 ))}
               </ul>
               <Link href="/signup">
-                <button className={`hover:-translate-y-1 px-2 py-1 rounded-md w-full duration-300 font-medium cursor-pointer
+                <button className={`px-2 py-1 rounded-md w-full duration-300 font-medium cursor-pointer
                 ${tier.popular ? "bg-white text-black hover:bg-white/80" : "border border-white/30 hover:bg-white/10"}`}>{tier.buttonText}</button>
               </Link>
 
