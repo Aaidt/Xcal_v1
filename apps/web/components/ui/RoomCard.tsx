@@ -34,10 +34,8 @@ export default function RoomCard({ room, visiting, onRefresh }: RoomCardProps) {
       <DeleteRoomModal open={deleteModalOpen} setOpen={setDeleteModalOpen} 
         onDelete={async () => {
           try{
-            const response = await axios.delete(`${BACKEND_URL}/api/room/delete/single/${room.id}`, {
-              headers: { 
-                Authorization: localStorage.getItem('Authorization') 
-              },
+            const response = await axios.delete(`${BACKEND_URL}/api/room/deleteRoom/${room.id}`, {
+              headers: { Authorization: localStorage.getItem('Authorization') }
             });
             toast.success(response.data.message)
             onRefresh?.();

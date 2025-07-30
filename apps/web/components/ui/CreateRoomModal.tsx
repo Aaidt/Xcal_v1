@@ -39,13 +39,9 @@ export function CreateRoomModal({
     setLoading(true);
     try {
       const res = await axios.post<axiosResponse>(
-        `${BACKEND_URL}/api/room`,
+        `${BACKEND_URL}/api/room/create`,
         { slug },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
+        { headers: { Authorization: token } }
       );
 
       toast.success(res.data.message);

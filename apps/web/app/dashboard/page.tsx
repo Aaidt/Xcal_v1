@@ -38,16 +38,14 @@ export default function Dashboard() {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
+      ) { setIsOpen(false) }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("authorization");
+    localStorage.removeItem("Authorization");
     router.push("/");
   };
 
@@ -59,38 +57,26 @@ export default function Dashboard() {
         setLoading(true)
 
         const res = await axios.get(`${BACKEND_URL}/api/auth/me`, {
-          headers: {
-            Authorization: token,
-          },
+          headers: { Authorization: token },
         });
   
         setName(res.data?.user.name);
   
         const admin = await axios.get<{ adminRooms: Room[] }>(
           `${BACKEND_URL}/api/room/admin`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
+          { headers: { Authorization: token } }
         );
         setAdminRooms(admin.data.adminRooms || []);
   
         const visited = await axios.get<{ visitedRooms: Room[] }>(
           `${BACKEND_URL}/api/room/visited`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
+          { headers: { Authorization: token } }
         );
         setVisitedRooms(visited.data.visitedRooms || []);
       }catch(err){
         console.log(err);
-        toast.error('Coul not fetch your rooms')
-      } finally{
-        setLoading(false)
-      }
+        toast.error('Could not fetch your rooms')
+      } finally{ setLoading(false)}
     }
     fetchData();
   }, [refresh]);
@@ -102,7 +88,7 @@ export default function Dashboard() {
       <DeleteRoomModal open={deleteModalOpen} setOpen={setDeleteModalOpen} 
         onDelete={async () => {
           try{
-            const response = await axios.delete(`${BACKEND_URL}/api/room/delete/multiple`, {
+            const response = await axios.delete(`${BACKEND_URL}/api/room/deleteAll`, {
               headers: { 
                 Authorization: localStorage.getItem('Authorization') 
               },

@@ -3,7 +3,7 @@ import { prismaClient } from '@repo/db/client';
 
 const roomRouter: Router = Router();
 
-roomRouter.post("/createRoom", async function (req: Request, res: Response) {
+roomRouter.post("/create", async function (req: Request, res: Response) {
     const { userId, slug } = req.body;
 
     try{
@@ -15,9 +15,7 @@ roomRouter.post("/createRoom", async function (req: Request, res: Response) {
         })
 
         if(!room){
-            res.status(402).json({
-                message: "Error creaing room"
-            })
+            res.status(402).json({ message: "Error creaing room" })
             return
         }
 
@@ -31,16 +29,30 @@ roomRouter.post("/createRoom", async function (req: Request, res: Response) {
     }
 })
 
-roomRouter.delete("/deleteRoom", async function (req: Request, res: Response) {
-    const { userId, slug } = req.body;
+roomRouter.delete("/deleteRoom/:roomId", async function (req: Request<{roomId: string}>, res: Response) {
+    const { userId } = req.body;
+    const { roomId } = req.params;
 
     try{
-        const room = await prismaClient.room.delete({ where: { slug, adminId: userId } })
+        const room = await prismaClient.room.delete({ where: { id: roomId, adminId: userId } })
 
         res.status(200).json({ message: "room deleted" + room.id  })
     }catch(err){
         console.log("Server error. Could not delete room.");
         res.status(500).json({ message: "Server error. Could not delete room." })
+    }
+})
+
+roomRouter.delete("/deleteAll", async function (req: Request, res: Response) {
+    const { userId } = req.body;
+
+    try{
+        await prismaClient.room.deleteMany({ where: { adminId: userId } })
+
+        res.status(200).json({ message: "All rooms deleted"})
+    }catch(err){
+        console.log("Server error. Could not delete rooms.");
+        res.status(500).json({ message: "Server error. Could not delete rooms." })
     }
 })
 

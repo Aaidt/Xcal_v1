@@ -10,7 +10,7 @@ export function JoinRoomModal({
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
 }) {
-    const router  = useRouter()
+  const router  = useRouter()
 
   const [slug, setSlug] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
