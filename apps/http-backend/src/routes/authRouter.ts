@@ -1,8 +1,12 @@
 import { Router, Request, Response } from "express";
 import { prismaClient } from '@repo/db/client';
 import { compare, hash } from "bcrypt"
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv";
+dotenv.config()
 
 const authRouter: Router = Router();
+const jwt_secret = process.env.jwt_secret as string;
 
 authRouter.post("/signup", async function (req:Request, res: Response) {
     const { name, username, password } = req.body;
@@ -23,11 +27,10 @@ authRouter.post("/signup", async function (req:Request, res: Response) {
             res.status(402).json({ message: "Failed to create the user" })
             return 
         }
-        res.status(200).json({ 
-            message: "User created successfully.",
-            userId: user.id 
-        })
 
+        const token = jwt.sign({ userId: user.id }, jwt_secret);
+
+        res.status(200).json({ message: "User created successfully.", userId: user.id, token })
 
     }catch(err){
         console.log("Server error.")
@@ -47,15 +50,18 @@ authRouter.post("/signin", async function (req:Request, res: Response) {
             return 
         }
 
-        if(password !== user.password){
+        if(!(await compare(password, user.password))){
             console.log("Incorrect password")
             res.status(403).json({ message: "Incorrect credentials" })
             return 
         }
 
+        const token = jwt.sign({ userId: user?.id }, jwt_secret);
+
         res.status(200).json({ 
             message: "signed in.",
-            userId: user.id
+            userId: user.id,
+            token
         })
 
     }catch(err){
