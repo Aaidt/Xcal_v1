@@ -114,7 +114,7 @@ roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Resp
             res.status(403).json({ message: "Room could not fetched" })
             return 
         }
-        res.status(200).json({ room })
+        res.status(200).json({ roomId: room.id })
 
     }catch(err){
         console.log("Server error. Could not fetch the room.")
