@@ -15,6 +15,7 @@ interface Room {
   id: number;
   created_at: string;
   slug: string;
+  link: string;
 }
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;

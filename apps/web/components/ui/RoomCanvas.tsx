@@ -4,9 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation" 
 
-export default function RoomCanvas({ roomId, link }
-    : {
-        roomId: number,
+export default function RoomCanvas({ roomId, link } : 
+    {   roomId: number,
         link?: string
     }){
     const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -47,14 +46,42 @@ export default function RoomCanvas({ roomId, link }
             }))
         }
 
+        ws.onmessage = (event) => {
+            try{
+                const data = JSON.parse(event.data);
+                if(data.success === "true"){
+                    setLoading(false);
+                }
+            }catch(err){
+                console.log("Error is: " + err)
+            }
+        }
+
+        ws.onclose = () => {
+            console.log('Ws connection closed.')
+            toast.warn("websocket connection closed")
+            setLoading(false);
+        }
+
         return () => {
             ws.close();
             setSocket(null);
             toast.error('Falied to connec to the server.')
         }
-    }, [])
+    }, [roomId, WS_URL, router, token, link])
 
-    return <div>
-    </div>
+    if (!socket) {
+        return <div className="bg-black/95 min-h-screen text-white text-lg flex justify-center items-center">
+            Socket connection not established
+        </div>
+    }
+
+    if (loading) {
+        return <div className="bg-black/95 min-h-screen text-white text-lg flex justify-center items-center">
+            Connecting to the server...
+        </div>
+    }
+
+    return 
 
 }
