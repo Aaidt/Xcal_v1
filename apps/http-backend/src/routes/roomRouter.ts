@@ -130,7 +130,7 @@ roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Resp
         }
         res.status(200).json({ 
             roomId: room.id, 
-            link: room.link 
+            link: room.link?.link
         })
 
     }catch(err){

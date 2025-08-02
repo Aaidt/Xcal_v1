@@ -32,7 +32,7 @@ export default function GetRoomId({ slug } : { slug: string}) {
                 const token = localStorage.getItem('Authorization');
 
                 if (!token) {
-                    toast.error('Authorization token not found');
+                    toast.error('Auth token not found');
                     setLoading(false)
                     router.push('/signin');
                     return;
@@ -41,7 +41,7 @@ export default function GetRoomId({ slug } : { slug: string}) {
                 const response = await axios.get<axiosResponse>(`${BACKEND_URL}/api/room/${slug}`, {
                     headers: { "Authorization": token }
                 })
-                setRoomId(response.data?.roomId)
+                  setRoomId(response.data?.roomId)
                 setLink(response.data?.link)
                 toast.success('Room loaded Successfully!!!')
             } catch (err) {

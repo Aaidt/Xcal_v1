@@ -7,5 +7,5 @@ export default async function Canvas ({
 }) {    
     const { slug } = await params;
 
-    <GetRoomId slug={slug} />
+    return <GetRoomId slug={slug} />
 }   
