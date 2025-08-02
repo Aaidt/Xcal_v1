@@ -64,8 +64,6 @@ export class Game {
     private leftX = 0
     private baseY = 0
     private rightX = 0
-    private toX = 0
-    private toY = 0
     private fromX = 0
     private fromY = 0
     private pencilPath: { x: number, y: number }[] = [];
@@ -186,17 +184,17 @@ export class Game {
             }
             else if (shape.type === "pencil") {
                 this.ctx.beginPath();
-                this.ctx.moveTo(shape.path[0].x, shape.path[0].y);
+                this.ctx.moveTo(shape.path[0]!.x, shape.path[0]!.y);
 
                 for (let i = 1; i < shape.path.length - 1; i++) {
-                    const midX = (shape.path[i].x + shape.path[i + 1].x) / 2;
-                    const midY = (shape.path[i].y + shape.path[i + 1].y) / 2;
+                    const midX = (shape.path[i]!.x + shape.path[i + 1]!.x) / 2;
+                    const midY = (shape.path[i]!.y + shape.path[i + 1]!.y) / 2;
 
-                    this.ctx.quadraticCurveTo(shape.path[i].x, shape.path[i].y, midX, midY);
+                    this.ctx.quadraticCurveTo(shape.path[i]!.x, shape.path[i]!.y, midX, midY);
                 }
 
                 const last = shape.path[shape.path.length - 1];
-                this.ctx.lineTo(last.x, last.y);
+                this.ctx.lineTo(last!.x, last!.y);
 
                 this.ctx.strokeStyle = "white";
                 this.ctx.lineWidth = 2;
@@ -516,17 +514,17 @@ export class Game {
                 if (path.length < 2) return;
 
                 this.ctx.beginPath();
-                this.ctx.moveTo(path[0].x, path[0].y);
+                this.ctx.moveTo(path[0]!.x, path[0]!.y);
 
                 for (let i = 1; i < path.length - 1; i++) {
-                    const midX = (path[i].x + path[i + 1].x) / 2;
-                    const midY = (path[i].y + path[i + 1].y) / 2;
+                    const midX = (path[i]!.x + path[i + 1]!.x) / 2;
+                    const midY = (path[i]!.y + path[i + 1]!.y) / 2;
 
-                    this.ctx.quadraticCurveTo(path[i].x, path[i].y, midX, midY);
+                    this.ctx.quadraticCurveTo(path[i]!.x, path[i]!.y, midX, midY);
                 }
 
                 const last = path[path.length - 1];
-                this.ctx.lineTo(last.x, last.y);
+                this.ctx.lineTo(last!.x, last!.y);
 
                 this.ctx.strokeStyle = "white";
                 this.ctx.lineWidth = 2;

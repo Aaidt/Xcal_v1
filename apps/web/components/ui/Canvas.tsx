@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import IconButton from "./IconButton"
 import { Pencil, Circle, Square, Slash, Triangle, ArrowRight, MousePointer, Eraser } from "lucide-react"
-import { Game } from "@/game/game"
+import { Game } from "../../game/game"
 import { toast } from "react-toastify"
 
 export type Tool = "pencil" | "circle" | "rect" | "line" | "triangle" | "arrow" | "pointer" | "eraser"
