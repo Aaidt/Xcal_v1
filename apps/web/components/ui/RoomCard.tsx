@@ -7,7 +7,7 @@ import { DeleteRoomModal } from "./DeleteRoomModal";
 import axios from 'axios'
 import { useState } from "react";
 import { toast } from 'react-toastify'
-import { ShareIcon } from "./ShareIcon" 
+import { Share } from "lucide-react";
 
 
 interface RoomCardProps {
@@ -60,10 +60,13 @@ export default function RoomCard({ room, visiting, onRefresh }: RoomCardProps) {
 
         {visiting ? null : <div className="flex gap-6"> 
 
-          <ShareIcon hash={room.link} />
+          <Share onClick={(e) => {
+              e.stopPropagation();
+              toast.success(`Share this link with your friends!!! ⚡${room.link.link}⚡`)
+          }} className="z-100 size-5 cursor-pointer" strokeWidth="1.5"  />
 
           <Trash2 
-            className="size-5 cursor-pointer  hover:text-red-700 text-red-800"
+            className="size-5 cursor-pointer hover:text-red-700 text-red-800"
             onClick={(e) => {
               e.stopPropagation();
               setDeleteModalOpen(true)

@@ -40,11 +40,10 @@ export default function RootLayout({
           position="top-center"
           autoClose={5000}
           hideProgressBar={false}
-          newestOnTop={false}
+          newestOnTop={true}
           closeOnClick
           rtl={false}
           pauseOnFocusLoss
-          draggable
           pauseOnHover
           theme="dark"
           transition={Zoom}

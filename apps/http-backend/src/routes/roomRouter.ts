@@ -75,7 +75,14 @@ roomRouter.get("/admin", async function (req: Request, res: Response) {
     const userId = req.userId;
 
     try{
-        const rooms = await prismaClient.room.findMany({ where: { adminId: userId }})
+        const rooms = await prismaClient.room.findMany({ 
+            where: { adminId: userId },
+            select: { 
+                link: true,
+                created_at: true,
+                slug: true
+            }
+        })
 
         res.status(200).json({ adminRooms: rooms  })
     }catch(err){

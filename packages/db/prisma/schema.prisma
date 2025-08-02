@@ -39,6 +39,7 @@ model Link {
 model Room {
   id   String @id @default(uuid())
   slug String @unique
+  created_at DateTime @default(now())
 
   adminId String
   admin   User   @relation("Admin", fields: [adminId], references: [id], onDelete: Cascade)

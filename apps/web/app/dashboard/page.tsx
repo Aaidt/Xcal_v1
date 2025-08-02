@@ -116,7 +116,7 @@ export default function Dashboard() {
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
           <div className="relative flex items-center" ref={dropdownRef}>
-            <p className="mx-4 px-4 py-2 pb-1 text-md font-medium">
+            <p className="mx-4 px-2 py-2 pb-1 text-md font-medium">
                 Welcome!  {name}
             </p>
             <button
