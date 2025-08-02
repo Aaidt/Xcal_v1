@@ -9,13 +9,15 @@ import { useRouter } from 'next/navigation'
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface axiosResponse {
-    roomId: number
+    roomId: number,
+    link: string
 }
 
-export default function GetRoomId({ slug }: { slug: string }) {
+export default function GetRoomId({ slug } : { slug: string}) {
 
     const [roomId, setRoomId] = useState<number | null>()
     const [loading, setLoading] = useState<boolean>(true)
+    const [link, setLink] = useState<string>("")
     const router = useRouter();
 
 
@@ -39,7 +41,8 @@ export default function GetRoomId({ slug }: { slug: string }) {
                 const response = await axios.get<axiosResponse>(`${BACKEND_URL}/api/room/${slug}`, {
                     headers: { "Authorization": token }
                 })
-                setRoomId(response?.data.roomId)
+                setRoomId(response.data?.roomId)
+                setLink(response.data?.link)
                 toast.success('Room loaded Successfully!!!')
             } catch (err) {
                 toast.error('An unexpected error occured...')
@@ -68,5 +71,5 @@ export default function GetRoomId({ slug }: { slug: string }) {
         )
     }
 
-    return <RoomCanvas roomId={roomId} />
+    return <RoomCanvas roomId={roomId} link={link} />
 }
