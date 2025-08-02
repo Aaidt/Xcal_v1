@@ -7,7 +7,7 @@ import { DeleteRoomModal } from "./DeleteRoomModal";
 import axios from 'axios'
 import { useState } from "react";
 import { toast } from 'react-toastify'
-import { Share } from "./Share" 
+import { ShareIcon } from "./ShareIcon" 
 
 
 interface RoomCardProps {
@@ -58,9 +58,9 @@ export default function RoomCard({ room, visiting, onRefresh }: RoomCardProps) {
           <p className="text-sm text-gray-500">Created: {new Date(room.created_at).toLocaleDateString()}</p>
         </div>
 
-        {visiting ? null : <div className="flex gap-4"> 
+        {visiting ? null : <div className="flex gap-6"> 
 
-          <Share hash={room.link} />
+          <ShareIcon hash={room.link} />
 
           <Trash2 
             className="size-5 cursor-pointer  hover:text-red-700 text-red-800"

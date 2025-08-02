@@ -75,15 +75,9 @@ roomRouter.get("/admin", async function (req: Request, res: Response) {
     const userId = req.userId;
 
     try{
-        const room = await prismaClient.room.findFirst({ where: { adminId: userId }})
+        const rooms = await prismaClient.room.findMany({ where: { adminId: userId }})
 
-        if(!room){
-            console.log("No rooms found")
-            res.status(404).json({ message: "No rooms found" })
-            return
-        }
-
-        res.status(200).json({ message: "room deleted" + room.id  })
+        res.status(200).json({ adminRooms: rooms  })
     }catch(err){
         console.log("Server error. Could not find room.");
         res.status(500).json({ message: "Server error. Could not find room." })
@@ -94,15 +88,9 @@ roomRouter.get("/visited", async function (req: Request, res: Response) {
     const userId = req.userId;
 
     try{
-        const room = await prismaClient.room.findFirst({ where: { user: { some: { id: userId } } } })
+        const rooms = await prismaClient.room.findMany({ where: { user: { some: { id: userId } } } })
 
-        if(!room){
-            console.log("No rooms found")
-            res.status(404).json({ message: "No rooms found" })
-            return
-        }
-
-        res.status(200).json({ visited: room })
+        res.status(200).json({ visitedRooms: rooms })
     }catch(err){
         console.log("Server error. Could not find room.");
         res.status(500).json({ message: "Server error. Could not find room." })

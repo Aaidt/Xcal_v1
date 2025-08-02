@@ -119,7 +119,7 @@ export function AuthPage({ isSignin }: { isSignin: boolean }) {
             </label>
 
             <div className="pt-3 flex justify-center items-center">
-                <button className="w-full bg-black/90 rounded-md text-white font-semibold px-4 hover:bg-black/75 duration-300 transition-all py-1"
+                <button className="w-full bg-black/90 rounded-md text-white cursor-pointer font-semibold px-4 hover:bg-black/75 duration-300 transition-all py-1"
                     onClick={handleAuth} disabled={loading}>
                     {loading ? "Processing..." : isSignin ? "Login" : "Sign-up"}</button>
             </div>

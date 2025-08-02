@@ -105,7 +105,7 @@ export default function Dashboard() {
         }
         />
 
-        <JoinRoomModal open={joinModalOpen} setOpen={setJoinModalOpen} />
+      <JoinRoomModal open={joinModalOpen} setOpen={setJoinModalOpen} />
 
       <motion.div
         initial={{ opacity: 0 }}
