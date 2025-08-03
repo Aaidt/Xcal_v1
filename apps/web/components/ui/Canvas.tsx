@@ -58,40 +58,45 @@ function Topbar({
     setSelectedTool: (s: Tool) => void
 }) {
     return (
-        <div className="flex fixed top-5 left-1/2 -translate-x-1/2 z-50 p-2 border border-white/30 gap-2
-        bg-gray-800 backdrop-blur-md rounded-lg">
-            <IconButton icon={<MousePointer className="w-4 h-4" />}
-                onClick={() => setSelectedTool("pointer")}
-                activated={selectedTool === "pointer"} />
+        <div>
+            <div className="flex fixed top-5 left-1/2 -translate-x-1/2 z-50 px-3 py-2 bg-[#232329] gap-2
+                backdrop-blur-md rounded-lg">
+                <IconButton icon={<MousePointer className="w-4 h-4" />}
+                    onClick={() => setSelectedTool("pointer")}
+                    activated={selectedTool === "pointer"} />
 
-            <IconButton icon={<Pencil className="w-4 h-4" />}
-                onClick={() => setSelectedTool("pencil")}
-                activated={selectedTool === "pencil"} />
+                <IconButton icon={<Pencil className="w-4 h-4" />}
+                    onClick={() => setSelectedTool("pencil")}
+                    activated={selectedTool === "pencil"} />
 
-            <IconButton icon={<Circle className="w-4 h-4" />}
-                onClick={() => setSelectedTool("circle")}
-                activated={selectedTool === "circle"} />
+                <IconButton icon={<Circle className="w-4 h-4" />}
+                    onClick={() => setSelectedTool("circle")}
+                    activated={selectedTool === "circle"} />
 
-            <IconButton icon={<Square className="w-4 h-4" />}
-                onClick={() => setSelectedTool("rect")}
-                activated={selectedTool === "rect"} />
+                <IconButton icon={<Square className="w-4 h-4" />}
+                    onClick={() => setSelectedTool("rect")}
+                    activated={selectedTool === "rect"} />
 
-            <IconButton icon={<Slash className="w-4 h-4" />}
-                onClick={() => setSelectedTool("line")}
-                activated={selectedTool === "line"} />
+                <IconButton icon={<Slash className="w-4 h-4" />}
+                    onClick={() => setSelectedTool("line")}
+                    activated={selectedTool === "line"} />
 
-            <IconButton icon={<Triangle className="w-4 h-4" />}
-                onClick={() => setSelectedTool("triangle")}
-                activated={selectedTool === "triangle"} />
+                <IconButton icon={<Triangle className="w-4 h-4" />}
+                    onClick={() => setSelectedTool("triangle")}
+                    activated={selectedTool === "triangle"} />
 
-            <IconButton icon={<ArrowRight className="w-4 h-4" />}
-                onClick={() => setSelectedTool("arrow")}
-                activated={selectedTool === "arrow"} />
+                <IconButton icon={<ArrowRight className="w-4 h-4" />}
+                    onClick={() => setSelectedTool("arrow")}
+                    activated={selectedTool === "arrow"} />
 
-            <IconButton icon={<Eraser className="w-4 h-4" />}
-                onClick={() => setSelectedTool("eraser")}
-                activated={selectedTool === "eraser"} />
-
+                <IconButton icon={<Eraser className="w-4 h-4" />}
+                    onClick={() => setSelectedTool("eraser")}
+                    activated={selectedTool === "eraser"} />
+            </div>
+            <button className="bg-[#a9a4ff] rounded-md px-3 py-2 text-black cursor-pointer hover:bg-[#a9a4ff]/90 text-sm
+                fixed top-0 right-0 m-6">
+                Share
+            </button>
         </div>
     )
 }

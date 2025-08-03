@@ -63,7 +63,7 @@ export default function RoomCard({ room, visiting, onRefresh }: RoomCardProps) {
           <Share onClick={(e) => {
               e.stopPropagation();
               toast.success(`Share this link with your friends!!! ⚡${room.link.link}⚡`)
-          }} className="z-100 size-5 cursor-pointer" strokeWidth="1.5"  />
+          }} className="size-5 cursor-pointer" strokeWidth="1.5"  />
 
           <Trash2 
             className="size-5 cursor-pointer hover:text-red-700 text-red-800"
