@@ -64,7 +64,7 @@ export default function RoomCanvas({ roomId, link } :
 
         ws.onclose = (e) => {
             console.log('Ws connection closed.' + JSON.stringify(e))
-            toast.warn("websocket connection closed")
+            toast.warn("Websocket connection closed")
             setLoading(false);
         }
 
@@ -72,7 +72,7 @@ export default function RoomCanvas({ roomId, link } :
             console.log("clean up func")
             ws.close();
             setSocket(null);
-            toast.error('Falied to connect to the server.')
+            toast.warn("You have left the room!")
         }
     }, [])
 

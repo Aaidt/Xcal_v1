@@ -1,8 +1,18 @@
 import { Router, Request, Response } from "express"
 import { prismaClient } from '@repo/db/client';
-import { hash } from "bcrypt";
 
 const roomRouter: Router = Router();
+
+function hashFunction (): string{
+    const char = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"
+    let hash = "";
+    const length = char.length;
+    for(let i = 0; i < length; i ++){
+        hash += char[Math.floor(Math.random() * length)]
+    }
+    return hash
+}
+
 
 roomRouter.post("/create", async function (req: Request, res: Response) {
     const { slug } = req.body;
@@ -21,7 +31,7 @@ roomRouter.post("/create", async function (req: Request, res: Response) {
             return
         }
 
-        const link = await hash(slug, 10);
+        const link = hashFunction();
 
         const generatedLink = await prismaClient.link.create({
             data:{
@@ -138,6 +148,32 @@ roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Resp
         res.status(500).json({ message: "Server error. Could not fetch the room." })
     }
 })
+
+roomRouter.get("/", async function (req:Request, res: Response){
+    const link = req.query.link as string;
+
+    if (!link) {
+        return res.status(400).json({ message: "Link query param is required" });
+    }
+
+    try {
+        const linkRecord = await prismaClient.link.findUnique({
+            where: { link: link },
+            include: { room: true },
+        });
+
+        if (!linkRecord || !linkRecord.room) {
+            return res.status(404).json({ message: "No room found for the given link" });
+        }
+
+        res.status(200).json({ room: linkRecord.room });
+    } catch (err) {
+        console.error("Server error. Could not fetch the room associated with the link.", err);
+        res.status(500).json({ message: "Server error. Could not fetch the room associated with the link." });
+    }
+
+})
+
 
 roomRouter.post("/shapes/:roomId", async function (req: Request<{roomId: string}>, res: Response){
     const { roomId } = req.params

@@ -41,9 +41,7 @@ export default function RootLayout({
           autoClose={5000}
           hideProgressBar={false}
           newestOnTop={true}
-          closeOnClick
           rtl={false}
-          pauseOnFocusLoss
           pauseOnHover
           theme="dark"
           transition={Zoom}
