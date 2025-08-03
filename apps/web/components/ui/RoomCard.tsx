@@ -12,7 +12,7 @@ import { Share } from "lucide-react";
 
 interface RoomCardProps {
   room: {
-    id: number
+    id: string
     slug: string
     created_at: string
     link: string
@@ -36,6 +36,7 @@ export default function RoomCard({ room, visiting, onRefresh }: RoomCardProps) {
       <DeleteRoomModal open={deleteModalOpen} setOpen={setDeleteModalOpen} 
         onDelete={async () => {
           try{
+            console.log(room.id);
             const response = await axios.delete(`${BACKEND_URL}/api/room/deleteRoom/${room.id}`, {
               headers: { Authorization: localStorage.getItem('Authorization') }
             });

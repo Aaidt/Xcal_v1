@@ -3,7 +3,7 @@ import { toast } from "react-toastify"
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 
-export async function getExistingShapes(roomId: number, token: string) {
+export async function getExistingShapes(roomId: string, token: string) {
     let message;
     try {
         const response = await axios.get(`${BACKEND_URL}/api/room/shapes/${roomId}`, {

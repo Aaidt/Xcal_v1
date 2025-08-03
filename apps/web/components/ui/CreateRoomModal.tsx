@@ -7,7 +7,7 @@ import axios from 'axios';
 
 interface axiosResponse {
   message: string;
-  roomId: number;
+  roomId: string;
 }
 
 export function CreateRoomModal({

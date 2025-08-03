@@ -9,13 +9,13 @@ import { useRouter } from 'next/navigation'
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface axiosResponse {
-    roomId: number,
+    roomId: string,
     link: string
 }
 
 export default function GetRoomId({ slug } : { slug: string}) {
 
-    const [roomId, setRoomId] = useState<number | null>()
+    const [roomId, setRoomId] = useState<string | null>()
     const [loading, setLoading] = useState<boolean>(true)
     const [link, setLink] = useState<string>("")
     const router = useRouter();

@@ -13,7 +13,6 @@ function hashFunction (): string{
     return hash
 }
 
-
 roomRouter.post("/create", async function (req: Request, res: Response) {
     const { slug } = req.body;
     const userId = req.userId
@@ -61,7 +60,7 @@ roomRouter.delete("/deleteRoom/:roomId", async function (req: Request<{roomId: s
     try{
         const room = await prismaClient.room.delete({ where: { id: roomId, adminId: userId } })
 
-        res.status(200).json({ message: "room deleted" + room.id  })
+        res.status(200).json({ message: "room deleted" })
     }catch(err){
         console.log("Server error. Could not delete room.");
         res.status(500).json({ message: "Server error. Could not delete room." })
@@ -88,6 +87,7 @@ roomRouter.get("/admin", async function (req: Request, res: Response) {
         const rooms = await prismaClient.room.findMany({ 
             where: { adminId: userId },
             select: { 
+                id: true,
                 link: true,
                 created_at: true,
                 slug: true
@@ -105,7 +105,9 @@ roomRouter.get("/visited", async function (req: Request, res: Response) {
     const userId = req.userId;
 
     try{
-        const rooms = await prismaClient.room.findMany({ where: { user: { some: { id: userId } } } })
+        const rooms = await prismaClient.room.findMany({ 
+            where: { user: { some: { id: userId } } }
+    })
 
         res.status(200).json({ visitedRooms: rooms })
     }catch(err){

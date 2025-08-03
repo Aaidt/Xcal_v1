@@ -12,10 +12,10 @@ import { DeleteRoomModal } from "@/components/ui/DeleteRoomModal";
 import { JoinRoomModal } from "@/components/ui/JoinRoomModal";
 
 interface Room {
-  id: number;
-  created_at: string;
-  slug: string;
-  link: string;
+  id: string
+  created_at: string
+  slug: string
+  link: string
 }
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -52,27 +52,27 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("Authorization");
+      const token = localStorage.getItem("Authorization")
 
       try{
         setLoading(true)
 
         const res = await axios.get(`${BACKEND_URL}/api/auth/me`, {
-          headers: { Authorization: token },
+            headers: { Authorization: token },
         });
   
         setName(res.data?.user.name);
   
-        const admin = await axios.get<{ adminRooms: Room[] }>(
-          `${BACKEND_URL}/api/room/admin`,
-          { headers: { Authorization: token } }
+        const admin = await axios.get<{ adminRooms: Room[] }>(`${BACKEND_URL}/api/room/admin`,
+            { headers: { Authorization: token } }
         );
+        console.log(admin.data.adminRooms)
         setAdminRooms(admin.data.adminRooms || []);
   
-        const visited = await axios.get<{ visitedRooms: Room[] }>(
-          `${BACKEND_URL}/api/room/visited`,
-          { headers: { Authorization: token } }
+        const visited = await axios.get<{ visitedRooms: Room[] }>( `${BACKEND_URL}/api/room/visited`,
+            { headers: { Authorization: token } }
         );
+        console.log(visited.data.visitedRooms)
         setVisitedRooms(visited.data.visitedRooms || []);
       }catch(err){
         console.log(err);

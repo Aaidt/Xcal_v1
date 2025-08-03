@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import Canvas from "./Canvas"
 
 export default function RoomCanvas({ roomId, link } : 
-    {   roomId: number,
+    {   roomId: string,
         link?: string
     }){
     const [socket, setSocket] = useState<WebSocket | null>(null);

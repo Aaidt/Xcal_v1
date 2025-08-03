@@ -14,7 +14,7 @@ export default function Canvas({
     roomId
 }: {
     socket: WebSocket,
-    roomId: number
+    roomId: string
 }) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const [selectedTool, setSelectedTool] = useState<Tool>("pencil")
@@ -57,9 +57,10 @@ function Topbar({
     selectedTool: Tool,
     setSelectedTool: (s: Tool) => void
 }) {
+
     return (
         <div>
-            <div className="flex fixed top-5 left-1/2 -translate-x-1/2 z-50 px-3 py-2 bg-[#232329] gap-2
+            <div className="flex fixed top-5 left-1/2 -translate-x-1/2 z-50 px-3 py-1 bg-[#232329] gap-2
                 backdrop-blur-md rounded-lg">
                 <IconButton icon={<MousePointer className="w-4 h-4" />}
                     onClick={() => setSelectedTool("pointer")}
@@ -93,7 +94,9 @@ function Topbar({
                     onClick={() => setSelectedTool("eraser")}
                     activated={selectedTool === "eraser"} />
             </div>
-            <button className="bg-[#a9a4ff] rounded-md px-3 py-2 text-black cursor-pointer hover:bg-[#a9a4ff]/90 text-sm
+            <button onClick={() => {
+
+            }} className="bg-[#a9a4ff] rounded-md px-3 py-2 text-black cursor-pointer hover:bg-[#a9a4ff]/90 text-sm
                 fixed top-0 right-0 m-6">
                 Share
             </button>

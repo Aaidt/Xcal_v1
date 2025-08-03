@@ -50,7 +50,7 @@ export class Game {
     private canvas: HTMLCanvasElement
     private ctx: CanvasRenderingContext2D
     private existingShapes: Shapes[]
-    private roomId: number
+    private roomId: string
     private socket: WebSocket
     private clicked: boolean
     private startX = 0
@@ -77,7 +77,7 @@ export class Game {
     // }
 
 
-    constructor(canvas: HTMLCanvasElement, roomId: number, socket: WebSocket, token: string) {
+    constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket, token: string) {
         this.token = token
         this.canvas = canvas
         this.ctx = canvas.getContext("2d")!;
