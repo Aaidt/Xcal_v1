@@ -22,7 +22,6 @@ interface User {
 const users: User[] = []
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
-console.log(JWT_SECRET)
 
 function verify(token: string): string | null {
 

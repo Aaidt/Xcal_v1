@@ -152,7 +152,7 @@ export default function Home() {
         </motion.div>
       </div>
 
-<div className="border-b border-foreground/30 mx-10"></div>
+<div className="border-b border-foreground/30"></div>
 
       <div id="features" className="bg-white dark:bg-white/10 pb-30">
         <h1 className="font-bold text-5xl pt-15 pl-15 mr-18 flex justify-center">Powerful features for creative minds</h1>
@@ -180,7 +180,7 @@ export default function Home() {
         </div>
       </div>
 
-          <div className="border-b border-foreground/30 mx-10"></div>
+          <div className="border-b border-foreground/30 "></div>
 
       <div id="pricing" className="pt-15 pb-20">
 
@@ -230,7 +230,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="border-b border-foreground/30 mx-10"></div>
+      <div className="border-b border-foreground/30 "></div>
 
       <div className="pt-15 pb-20 bg-white dark:bg-foreground text-black flex ">
 

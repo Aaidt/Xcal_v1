@@ -44,7 +44,7 @@ roomRouter.post("/create", async function (req: Request, res: Response) {
         }
 
         res.status(200).json({ 
-            message: "room created",
+            message: "Room created!",
             roomId: room.id 
         })
     }catch(err){
