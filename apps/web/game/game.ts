@@ -22,13 +22,6 @@ type Shapes = {
     endX: number,
     endY: number
 } | {
-    type: "triangle",
-    startX: number,
-    startY: number,
-    leftX: number,
-    baseY: number
-    rightX: number
-} | {
     type: "arrow",
     toX: number,
     toY: number,
@@ -90,7 +83,7 @@ export class Game {
         this.init()
     }
 
-    setTool(tool: "circle" | "pencil" | "rect" | "line" | "triangle" | "arrow" | "pointer" | "eraser") {
+    setTool(tool: "circle" | "pencil" | "rect" | "line" | "arrow" | "pointer" | "eraser") {
         this.selectedTool = tool
     }
 
@@ -145,10 +138,6 @@ export class Game {
             //                 shape.startY >= y && shape.startY <= y + height);
             //         }
 
-            //         if (shape.type === "triangle") {
-            //             return !(shape.startX >= x && shape.startX <= x + width &&
-            //                 shape.startY >= y && shape.startY <= y + height);
-            //         }
 
             //         if (shape.type === "arrow") {
             //             return !(shape.fromX >= x && shape.fromX <= x + width &&
@@ -213,15 +202,7 @@ export class Game {
                 this.ctx.strokeStyle = "white"
                 this.ctx.stroke();
             }
-            else if (shape.type === "triangle") {
-                this.ctx.beginPath();
-                this.ctx.moveTo(shape.startX, shape.startY)
-                this.ctx.lineTo(shape.leftX, shape.baseY);
-                this.ctx.lineTo(shape.rightX, shape.baseY);
-                this.ctx.closePath()
-                this.ctx.strokeStyle = "white"
-                this.ctx.stroke();
-            } else if (shape.type === "arrow") {
+            else if (shape.type === "arrow") {
                 const fromX = shape.fromX;
                 const fromY = shape.fromY;
                 const toX = shape.toX;
@@ -283,11 +264,6 @@ export class Game {
     //         }
 
     //         if (shape.type === "line") {
-    //             return !(shape.startX >= eraserX && shape.startX <= eraserX + eraserWidth &&
-    //                 shape.startY >= eraserY && shape.startY <= eraserY + eraserHeight);
-    //         }
-
-    //         if (shape.type === "triangle") {
     //             return !(shape.startX >= eraserX && shape.startX <= eraserX + eraserWidth &&
     //                 shape.startY >= eraserY && shape.startY <= eraserY + eraserHeight);
     //         }
@@ -373,15 +349,6 @@ export class Game {
                 endX: this.endX,
                 endY: this.endY
             }
-        } else if (selectedTool === "triangle") {
-            shape = {
-                type: "triangle",
-                startX: this.startX,
-                startY: this.startY,
-                leftX: this.leftX,
-                baseY: this.baseY,
-                rightX: this.rightX
-            }
         } else if (selectedTool === "arrow") {
             shape = {
                 type: "arrow",
@@ -462,14 +429,6 @@ export class Game {
                 this.ctx.lineTo(this.endX, this.endY)
                 this.ctx.strokeStyle = "white"
                 this.ctx.stroke()
-            } else if (selectedTool === "triangle") {
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.startX, this.startY)
-                this.ctx.lineTo(this.leftX, this.baseY);
-                this.ctx.lineTo(this.rightX, this.baseY);
-                this.ctx.closePath()
-                this.ctx.strokeStyle = "white"
-                this.ctx.stroke();
             } else if (selectedTool === "arrow") {
                 const fromX = this.fromX;
                 const fromY = this.fromY;

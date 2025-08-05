@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef } from "react"
 import IconButton from "./IconButton"
-import { Pencil, Circle, Square, Slash, Triangle, ArrowRight, MousePointer, Eraser } from "lucide-react"
+import { Pencil, Circle, Square, Minus, MoveRight, MousePointer, Eraser } from "lucide-react"
 import { Game } from "../../game/game"
 import { toast } from "react-toastify"
 
-export type Tool = "pencil" | "circle" | "rect" | "line" | "triangle" | "arrow" | "pointer" | "eraser"
+export type Tool = "pencil" | "circle" | "rect" | "line" | "arrow" | "pointer" | "eraser"
 
 
 export default function Canvas({
@@ -62,35 +62,31 @@ function Topbar({
         <div>
             <div className="flex fixed top-5 left-1/2 -translate-x-1/2 z-50 px-1 py-1 bg-[#232329] gap-2
                 backdrop-blur-md rounded-lg">
-                <IconButton icon={<MousePointer className="size-3.5" />}
+                <IconButton icon={<MousePointer className="size-3.5" fill={`${selectedTool == "pointer"? "white" : "#232329"}`} strokeWidth="1.5" />}
                     onClick={() => setSelectedTool("pointer")}
                     activated={selectedTool === "pointer"} />
 
-                <IconButton icon={<Pencil className="size-3.5" />}
+                <IconButton icon={<Pencil className="size-3.5" strokeWidth="1.5" />}
                     onClick={() => setSelectedTool("pencil")}
                     activated={selectedTool === "pencil"} />
 
-                <IconButton icon={<Circle className="size-3.5" />}
+                <IconButton icon={<Circle className="size-3.5" fill={`${selectedTool == "circle" ? "white" : "#232329"}`} strokeWidth="1.5" />}
                     onClick={() => setSelectedTool("circle")}
                     activated={selectedTool === "circle"} />
 
-                <IconButton icon={<Square className="size-3.5" />}
+                <IconButton icon={<Square className="size-3.5" fill={`${selectedTool == "rect" ? "white" : "#232329"}`} strokeWidth="1.5" />}
                     onClick={() => setSelectedTool("rect")}
                     activated={selectedTool === "rect"} />
 
-                <IconButton icon={<Slash className="size-3.5" />}
+                <IconButton icon={<Minus className="size-3.5" fill={`${selectedTool == "line" ? "white" : "#232329"}`} strokeWidth="1.5" />}
                     onClick={() => setSelectedTool("line")}
                     activated={selectedTool === "line"} />
 
-                <IconButton icon={<Triangle className="size-3.5" />}
-                    onClick={() => setSelectedTool("triangle")}
-                    activated={selectedTool === "triangle"} />
-
-                <IconButton icon={<ArrowRight className="size-3.5" />}
+                <IconButton icon={<MoveRight className="size-3.5" fill={`${selectedTool == "arrow" ? "white" : "#232329"}`} strokeWidth="1.5" />}
                     onClick={() => setSelectedTool("arrow")}
                     activated={selectedTool === "arrow"} />
 
-                <IconButton icon={<Eraser className="size-3.5" />}
+                <IconButton icon={<Eraser className="size-3.5" fill={`${selectedTool == "eraser" ? "white" : "#232329"}`} strokeWidth="1.5" />}
                     onClick={() => setSelectedTool("eraser")}
                     activated={selectedTool === "eraser"} />
             </div>
