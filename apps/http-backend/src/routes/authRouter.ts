@@ -74,7 +74,14 @@ authRouter.post("/signin", async function (req: Request, res: Response) {
 authRouter.get("/me", authMiddleware, async function (req: Request, res: Response) {
     const userId = req.userId;
     try {
-        const user = await prismaClient.user.findFirst({ where: { id: userId } });
+        const user = await prismaClient.user.findFirst({ 
+        where: { id: userId },
+        select: {
+            username: true,
+            name: true,
+            photo: true
+        }
+     });
         res.status(200).json({ user })
 
     } catch (err) { console.error(err) }

@@ -106,13 +106,17 @@ roomRouter.get("/visited", async function (req: Request, res: Response) {
 
     try{
         const rooms = await prismaClient.room.findMany({ 
-            where: { user: { some: { id: userId } } }
+            where: { user: { 
+                some: { id: userId } 
+            }, NOT: {
+                adminId: userId,
+            } }
     })
 
         res.status(200).json({ visitedRooms: rooms })
     }catch(err){
-        console.log("Server error. Could not find room.");
-        res.status(500).json({ message: "Server error. Could not find room." })
+        console.log("Server error. Could not fetch.");
+        res.status(500).json({ message: "Server error. Could not fetch." })
     }
 })
 
@@ -168,6 +172,7 @@ roomRouter.post("/shapes/:roomId", async function (req: Request<{roomId: string}
             update: { shape }
     })
     }catch(err){
+        console.log("Server error. could not insert shapes");
         res.status(500).json({ message: "Server error. could not insert shapes" })
     }
 })
@@ -183,9 +188,9 @@ roomRouter.get("/shapes/:roomId", async function (req: Request<{roomId: string}>
     }
 })
 
-
 roomRouter.get("/join/:link", async function (req:Request<{link:string}>, res: Response){
     const link = req.params.link as string;
+    const userId  = req.userId;
 
     if (!link) {
         return res.status(400).json({ message: "Link param is required" });
@@ -194,14 +199,28 @@ roomRouter.get("/join/:link", async function (req:Request<{link:string}>, res: R
     try {
         const linkRecord = await prismaClient.link.findUnique({
             where: { link: link },
-            include: { room: true },
+            include: { room: { include: { user: true } } },
         });
 
         if (!linkRecord || !linkRecord.room) {
             return res.status(404).json({ message: "No room found for the given link" });
         }
+        const room = linkRecord.room;
+        if (room.adminId !== userId && !room.user.some(u => u.id === userId)) {
+            await prismaClient.room.update({
+                where: { id: room.id },
+                data: {
+                    user: { connect: { id: userId } }
+                }
+            });
+            console.log(`User ${userId} added as participant to room ${room.id}`);
+        }
 
-        res.status(200).json({ roomId: linkRecord.room.id });
+        if(linkRecord.room.adminId !== userId){
+            console.log("You are joining the room: " + linkRecord.room.id);
+        }
+
+        res.status(200).json({ roomId: room.id });
     } catch (err) {
         console.error("Server error. Could not fetch the room associated with the link.", err);
         res.status(500).json({ message: "Server error. Could not fetch the room associated with the link." });
