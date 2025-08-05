@@ -34,7 +34,6 @@ export default function RoomCanvas({ roomId, link } :
         wsRef.current = ws
         setSocket(ws);
 
-        console.log("Reached the ws server");
         ws.onerror = (e) => {
             toast.error('Falied to connect to the server.')
             console.log('Ws error: ' + JSON.stringify(e, ["message", "arguments", "type", "name"]))
@@ -42,7 +41,6 @@ export default function RoomCanvas({ roomId, link } :
         }
 
         ws.onopen = () => {
-            console.log("open")
             ws.send(JSON.stringify({
                 type: "join_room",
                 link: link
@@ -50,8 +48,6 @@ export default function RoomCanvas({ roomId, link } :
         }
 
         ws.onmessage = (event) => {
-            console.log("message")
-
             try{
                 const data = JSON.parse(event.data);
                 if(data.status === "Success"){
@@ -69,7 +65,6 @@ export default function RoomCanvas({ roomId, link } :
         }
 
         return () => {
-            console.log("clean up func")
             ws.close();
             setSocket(null);
             toast.warn("You have left the room!")

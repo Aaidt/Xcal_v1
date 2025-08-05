@@ -12,19 +12,18 @@ export function JoinRoomModal({
 }) {
   const router  = useRouter()
 
-  const [slug, setSlug] = useState<string>("")
+  const [link, setLink] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
 
   const handleJoin = async () => {
-    if (!slug.trim()) {
-      toast.error("Please enter a valid room link or slug.")
+    if (!link.trim()) {
+      toast.error("Please enter a valid room link.")
       return
     }
 
     setLoading(true)
     try {
-      const extractedSlug = slug.includes("/") ? slug.split("/").pop() : slug
-      router.push(`/canvas/${extractedSlug}`)
+      router.push(`/joinRoom/${link}`)
     } catch (err) {
       toast.error("Failed to join room.")
       console.log(err)
@@ -53,8 +52,8 @@ export function JoinRoomModal({
 
             <div className="flex justify-center items-center gap-2 mt-5">
               <input
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !loading) handleJoin()
                 }}

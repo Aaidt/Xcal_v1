@@ -58,7 +58,7 @@ roomRouter.delete("/deleteRoom/:roomId", async function (req: Request<{roomId: s
     const { roomId } = req.params;
 
     try{
-        const room = await prismaClient.room.delete({ where: { id: roomId, adminId: userId } })
+        await prismaClient.room.delete({ where: { id: roomId, adminId: userId } })
 
         res.status(200).json({ message: "room deleted" })
     }catch(err){
@@ -116,6 +116,7 @@ roomRouter.get("/visited", async function (req: Request, res: Response) {
     }
 })
 
+
 roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Response) {
     const slug = req.params.slug
     const userId = req.userId;
@@ -136,8 +137,8 @@ roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Resp
         })
 
         if(!room){
-            console.log("Room could not fetched")
-            res.status(403).json({ message: "Room could not fetched" })
+            console.log("Could not fetch the room.")
+            res.status(403).json({ message: "Could not fetch the room." })
             return 
         }
         res.status(200).json({ 
@@ -151,37 +152,12 @@ roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Resp
     }
 })
 
-roomRouter.get("/", async function (req:Request, res: Response){
-    const link = req.query.link as string;
-
-    if (!link) {
-        return res.status(400).json({ message: "Link query param is required" });
-    }
-
-    try {
-        const linkRecord = await prismaClient.link.findUnique({
-            where: { link: link },
-            include: { room: true },
-        });
-
-        if (!linkRecord || !linkRecord.room) {
-            return res.status(404).json({ message: "No room found for the given link" });
-        }
-
-        res.status(200).json({ room: linkRecord.room });
-    } catch (err) {
-        console.error("Server error. Could not fetch the room associated with the link.", err);
-        res.status(500).json({ message: "Server error. Could not fetch the room associated with the link." });
-    }
-
-})
-
 
 roomRouter.post("/shapes/:roomId", async function (req: Request<{roomId: string}>, res: Response){
     const { roomId } = req.params
     const shape = req.body.shape;
     const shapeId = req.body.shapeId
-
+    
     try{
         await prismaClient.shape.upsert({
             where: { id: shapeId },
@@ -206,5 +182,32 @@ roomRouter.get("/shapes/:roomId", async function (req: Request<{roomId: string}>
         res.status(500).json({ message: "Server error. could not insert shapes" })
     }
 })
+
+
+roomRouter.get("/join/:link", async function (req:Request<{link:string}>, res: Response){
+    const link = req.params.link as string;
+
+    if (!link) {
+        return res.status(400).json({ message: "Link param is required" });
+    }
+
+    try {
+        const linkRecord = await prismaClient.link.findUnique({
+            where: { link: link },
+            include: { room: true },
+        });
+
+        if (!linkRecord || !linkRecord.room) {
+            return res.status(404).json({ message: "No room found for the given link" });
+        }
+
+        res.status(200).json({ roomId: linkRecord.room.id });
+    } catch (err) {
+        console.error("Server error. Could not fetch the room associated with the link.", err);
+        res.status(500).json({ message: "Server error. Could not fetch the room associated with the link." });
+    }
+
+})
+
 
 export default roomRouter

@@ -66,13 +66,13 @@ export default function Dashboard() {
         const admin = await axios.get<{ adminRooms: Room[] }>(`${BACKEND_URL}/api/room/admin`,
             { headers: { Authorization: token } }
         );
-        console.log(admin.data.adminRooms)
+        // console.log(admin.data.adminRooms)
         setAdminRooms(admin.data.adminRooms || []);
   
         const visited = await axios.get<{ visitedRooms: Room[] }>( `${BACKEND_URL}/api/room/visited`,
             { headers: { Authorization: token } }
         );
-        console.log(visited.data.visitedRooms)
+        // console.log(visited.data.visitedRooms)
         setVisitedRooms(visited.data.visitedRooms || []);
       }catch(err){
         console.log(err);

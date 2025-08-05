@@ -13,15 +13,18 @@ interface axiosResponse {
     link: string
 }
 
-export default function GetRoomId({ slug } : { slug: string}) {
+export default function GetRoomId({ slug, Roomlink } : { slug?: string, Roomlink?: string }) {
 
     const [roomId, setRoomId] = useState<string | null>()
     const [loading, setLoading] = useState<boolean>(true)
     const [link, setLink] = useState<string>("")
     const router = useRouter();
 
-
+    
     useEffect(() => {
+        if(Roomlink) {
+            setLink(Roomlink) 
+        }
         async function fetchRoomId() {
             try {
                 if (!BACKEND_URL) {
@@ -32,17 +35,25 @@ export default function GetRoomId({ slug } : { slug: string}) {
                 const token = localStorage.getItem('Authorization');
 
                 if (!token) {
-                    toast.error('Auth token not found');
+                    toast.error('Auth token not found.');
                     setLoading(false)
                     router.push('/signin');
                     return;
                 }
 
-                const response = await axios.get<axiosResponse>(`${BACKEND_URL}/api/room/${slug}`, {
-                    headers: { "Authorization": token }
-                })
-                  setRoomId(response.data?.roomId)
-                setLink(response.data?.link)
+                if(!Roomlink){
+                    const response = await axios.get<axiosResponse>(`${BACKEND_URL}/api/room/${slug}`, {
+                        headers: { "Authorization": token }
+                    })
+                    setRoomId(response.data?.roomId)
+                    setLink(response.data?.link)
+                }else {
+                    const response = await axios.get<{ roomId: string }>(`${BACKEND_URL}/api/room/join/${Roomlink}`, {
+                        headers: { "Authorization": token }
+                    });
+                    setRoomId(response.data?.roomId);
+                }
+
                 toast.success('Room loaded Successfully!!!')
             } catch (err) {
                 toast.error('An unexpected error occured...')
@@ -53,7 +64,7 @@ export default function GetRoomId({ slug } : { slug: string}) {
         }
 
         fetchRoomId()
-    }, [slug, router]);
+    }, [slug, router, Roomlink]);
 
     if(loading){
         return (
