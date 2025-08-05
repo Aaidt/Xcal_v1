@@ -7,7 +7,7 @@ dotenv.config()
 const wss = new WebSocketServer({ port: 8080 })
 
 interface data {
-    type: "join_room" | "leave_room" | "chat",
+    type: "join_room" | "leave_room" | "chat" | "visitor_count",
     link?: string,
     shape?: string,
     roomId: string  
@@ -44,6 +44,7 @@ function verify(token: string): string | null {
 
 
 wss.on("connection", function connect(ws, request) {
+    let visitors: string[] = [];
     
     const url = request.url;
     if(!url){
@@ -112,6 +113,7 @@ wss.on("connection", function connect(ws, request) {
         }
 
         if(parsedData.type === "leave_room"){
+            visitors = []; 
             const wasInRoom = user.rooms.includes(parsedData.roomId);
             if(!wasInRoom) return;
             
@@ -152,7 +154,16 @@ wss.on("connection", function connect(ws, request) {
             })
 
         }
-        
+
+        if(parsedData.type === "visitor_count"){
+            const roomId = parsedData.roomId
+            users.forEach(u => {
+                if(u.rooms.includes(roomId)){
+                visitors.push(u.userId)
+            }})
+            ws.send(JSON.stringify({ visitors: visitors.length }))
+        }
+
         
     })
     ws.on('error', console.error)

@@ -7,7 +7,7 @@ import Canvas from "./Canvas"
 
 export default function RoomCanvas({ roomId, link } : 
     {   roomId: string,
-        link?: string
+        link: string
     }){
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -60,12 +60,14 @@ export default function RoomCanvas({ roomId, link } :
 
         ws.onclose = (e) => {
             console.log('Ws connection closed.' + JSON.stringify(e))
+            ws.send(JSON.stringify({ type: "leave_room", roomId }))
             toast.warn("Websocket connection closed")
             setLoading(false);
         }
 
         return () => {
             ws.close();
+            ws.send(JSON.stringify({ type: "leave_room", roomId }))
             setSocket(null);
             toast.warn("You have left the room!")
         }
@@ -83,6 +85,6 @@ export default function RoomCanvas({ roomId, link } :
         </div>
     }
 
-    return <Canvas socket={socket} roomId={roomId} />
+    return <Canvas socket={socket} roomId={roomId} link={link} />
 
 }

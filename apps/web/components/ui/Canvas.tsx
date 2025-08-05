@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import IconButton from "./IconButton"
-import { Pencil, Circle, Square, Minus, MoveRight, MousePointer, Eraser } from "lucide-react"
+import { Users, Pencil, Circle, Square, Minus, MoveRight, MousePointer, Eraser } from "lucide-react"
 import { Game } from "../../game/game"
 import { toast } from "react-toastify"
 
@@ -11,17 +11,19 @@ export type Tool = "pencil" | "circle" | "rect" | "line" | "arrow" | "pointer" |
 
 export default function Canvas({
     socket,
-    roomId
+    roomId,
+    link
 }: {
     socket: WebSocket,
-    roomId: string
+    roomId: string,
+    link: string
 }) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const [selectedTool, setSelectedTool] = useState<Tool>("pencil")
     const [game, setGame] = useState<Game>();
-
+    
     const token = localStorage.getItem("Authorization");
-
+    
     useEffect(() => {
         game?.setTool(selectedTool)
     }, [selectedTool, game])
@@ -39,29 +41,50 @@ export default function Canvas({
                 g.destroy()
             }
         }
-
+        
     }, [canvasRef, roomId, socket, token])
 
 
     return <div className="min-h-screen overflow-hidden">
         <canvas width={window.innerWidth} height={window.innerHeight} ref={canvasRef} />
-        <Topbar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
+        <Topbar selectedTool={selectedTool} setSelectedTool={setSelectedTool} link={link} roomId={roomId} socket={socket} />
     </div>
 }
 
 
 function Topbar({
     selectedTool,
-    setSelectedTool
+    setSelectedTool,
+    link,
+    roomId,
+    socket
 }: {
     selectedTool: Tool,
-    setSelectedTool: (s: Tool) => void
+    setSelectedTool: (s: Tool) => void,
+    link: string,
+    roomId: string,
+    socket: WebSocket
 }) {
+    const [visitors, setVisitors] = useState<number>(0);
 
+
+    setTimeout(() => {
+        socket.send(JSON.stringify({ type: "visitor_count", roomId }))
+        socket.onmessage = (event) => {
+            console.log("message recieved.")
+            try{
+                const parsedData = JSON.parse(event.data);
+                setVisitors(parsedData.visitors);
+                console.log(parsedData.visitors);
+            }catch(err){
+                console.log("Error is: " + err);
+            }
+        }
+    }, 10 * 1000);
+    
     return (
         <div>
-            <div className="flex fixed top-5 left-1/2 -translate-x-1/2 z-50 px-1 py-1 bg-[#232329] gap-2
-                backdrop-blur-md rounded-lg">
+            <div className="flex fixed top-4 left-1/2 -translate-x-1/2 z-50 px-1 py-1 bg-[#232329] gap-2 rounded-lg">
                 <IconButton icon={<MousePointer className="size-3.5" fill={`${selectedTool == "pointer"? "white" : "#232329"}`} strokeWidth="1.5" />}
                     onClick={() => setSelectedTool("pointer")}
                     activated={selectedTool === "pointer"} />
@@ -90,12 +113,22 @@ function Topbar({
                     onClick={() => setSelectedTool("eraser")}
                     activated={selectedTool === "eraser"} />
             </div>
-            <button onClick={() => {
 
-            }} className="bg-[#a9a4ff] rounded-md px-3 py-2 text-black cursor-pointer hover:bg-[#a9a4ff]/90 text-sm
-                fixed top-0 right-0 m-6">
-                Share
-            </button>
+            <div className="fixed top-0 right-0 m-4 flex gap-2 items-center">
+
+                <button onClick={() => {
+                    toast.success(`Share this link with your friends!! ⚡${link}⚡`)
+                }} className="cursor-pointer text-black rounded-md px-3 py-2 bg-[#a9a4ff] text-xs hover:bg-[#a9a4ff]/90 ">
+                    Share
+                </button>
+
+                <div className="text-white cursor-pointer flex items-center gap-2 text-sm rounded-md px-3 py-2 
+                    hover:underline hover:underline-offset-3 duration-200">
+                    <Users strokeWidth="1.5" size="20" />
+                    People ({visitors})
+                </div>
+
+            </div>
         </div>
     )
 }
