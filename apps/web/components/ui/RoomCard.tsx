@@ -49,7 +49,7 @@ export default function RoomCard({ room, visiting, onRefresh }: RoomCardProps) {
         }} />
 
     <div 
-      className="border border-white/10 bg-white/5 p-4 rounded-md hover:bg-white/10 duration-200
+      className="border border-foreground/10 bg-foreground/5 p-4 rounded-md hover:bg-foreground/10 duration-200
        shadow hover:shadow-lg transition cursor-pointer">
       <div
         onClick={() => router.push(`/canvas/${room.slug}`)}

@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { CreateRoomModal } from "@/components/ui/CreateRoomModal";
 import { DeleteRoomModal } from "@/components/ui/DeleteRoomModal";
 import { JoinRoomModal } from "@/components/ui/JoinRoomModal";
+import { ModeToggle } from "@/components/ui/ModeToggle"
 
 interface Room {
   id: string
@@ -83,7 +84,7 @@ export default function Dashboard() {
   }, [refresh]);
 
   return (
-    <div className="p-15 min-h-screen max-w-screen mx-auto bg-black/95 text-white">
+    <div className="p-15 min-h-screen max-w-screen mx-auto bg-background/95 text-foreground">
       <CreateRoomModal open={modalOpen} setOpen={setModalOpen} />
 
       <DeleteRoomModal open={deleteModalOpen} setOpen={setDeleteModalOpen} 
@@ -115,13 +116,14 @@ export default function Dashboard() {
       >
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
-          <div className="relative flex items-center" ref={dropdownRef}>
+          <div className="relative flex " ref={dropdownRef}>
+          <ModeToggle />
             <p className="mx-4 px-2 py-2 pb-1 text-md font-medium">
                 Welcome!  {name}
             </p>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="hover:bg-white/5 duration-200 bg-white/10 
+              className="hover:bg-foreground/5 duration-200 bg-foreground/10 
                 transition-all rounded-full p-2 cursor-pointer"
             >
               <User />
@@ -160,7 +162,7 @@ export default function Dashboard() {
               <div className="flex gap-2">
                 <button 
                   onClick={() => setJoinModalOpen(true)}
-                  className="bg-white hover:bg-white/80 cursor-pointer duration-200 transition-all text-black rounded-md px-4 py-2
+                  className="bg-foreground hover:bg-foreground/80 cursor-pointer duration-200 transition-all text-background rounded-md px-4 py-2
                   flex mb-4 gap-1 font-medium items-center text-sm">
                   <SquarePlus className="size-4" /> Join room
                 </button>
@@ -168,7 +170,7 @@ export default function Dashboard() {
 
                 <button 
                   onClick={() => setModalOpen(true)}
-                  className="bg-white hover:bg-white/80 cursor-pointer duration-200 transition-all text-black rounded-md px-3 py-2
+                  className="bg-foreground hover:bg-foreground/80 cursor-pointer duration-200 transition-all text-background rounded-md px-3 py-2
                   flex mb-4 gap-1 font-medium items-center text-sm">
                   <Plus className="size-4" /> Create room
                 </button>

@@ -120,7 +120,6 @@ roomRouter.get("/visited", async function (req: Request, res: Response) {
     }
 })
 
-
 roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Response) {
     const slug = req.params.slug
     const userId = req.userId;
@@ -155,7 +154,6 @@ roomRouter.get("/:slug", async function (req: Request<{slug: string}>, res: Resp
         res.status(500).json({ message: "Server error. Could not fetch the room." })
     }
 })
-
 
 roomRouter.post("/shapes/:roomId", async function (req: Request<{roomId: string}>, res: Response){
     const { roomId } = req.params
