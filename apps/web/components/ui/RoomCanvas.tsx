@@ -60,7 +60,6 @@ export default function RoomCanvas({ roomId, link } :
 
         ws.onclose = (e) => {
             console.log('Ws connection closed.' + JSON.stringify(e))
-            ws.send(JSON.stringify({ type: "leave_room", roomId }))
             toast.warn("Websocket connection closed")
             setLoading(false);
         }

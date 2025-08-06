@@ -21,6 +21,30 @@ export default function Canvas({
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const [selectedTool, setSelectedTool] = useState<Tool>("pencil")
     const [game, setGame] = useState<Game>();
+    const [visitors, setVisitors] = useState<number>(0)
+
+    useEffect(() => {
+        if(!socket) return;
+
+        function handleMessage(event: MessageEvent){
+            try{
+                const parsedData = JSON.parse(event.data);
+
+                if(parsedData.type === "visitor_count"){
+                    console.log("Visitor count updated: ", parsedData.visitors);
+                    setVisitors(visitors);
+                }
+                
+            }catch(err){
+                console.log("Error is: " + err);
+            }
+            socket.addEventListener("message", handleMessage)
+
+            return () => {
+                socket.removeEventListener("message", handleMessage)
+            }
+        }
+    }, [])
     
     const token = localStorage.getItem("Authorization");
     
@@ -47,7 +71,7 @@ export default function Canvas({
 
     return <div className="min-h-screen overflow-hidden">
         <canvas width={window.innerWidth} height={window.innerHeight} ref={canvasRef} />
-        <Topbar selectedTool={selectedTool} setSelectedTool={setSelectedTool} link={link} roomId={roomId} socket={socket} />
+        <Topbar selectedTool={selectedTool} setSelectedTool={setSelectedTool} link={link} visitors={visitors} />
     </div>
 }
 
@@ -56,32 +80,13 @@ function Topbar({
     selectedTool,
     setSelectedTool,
     link,
-    roomId,
-    socket
+    visitors
 }: {
     selectedTool: Tool,
     setSelectedTool: (s: Tool) => void,
     link: string,
-    roomId: string,
-    socket: WebSocket
+    visitors: number
 }) {
-    const [visitors, setVisitors] = useState<number>(0);
-
-
-    setTimeout(() => {
-        socket.send(JSON.stringify({ type: "visitor_count", roomId }))
-        socket.onmessage = (event) => {
-            console.log("message recieved.")
-            try{
-                const parsedData = JSON.parse(event.data);
-                setVisitors(parsedData.visitors);
-                console.log(parsedData.visitors);
-            }catch(err){
-                console.log("Error is: " + err);
-            }
-        }
-    }, 10 * 1000);
-    
     return (
         <div>
             <div className="flex fixed top-4 left-1/2 -translate-x-1/2 z-50 px-1 py-1 bg-[#232329] gap-2 rounded-lg">
