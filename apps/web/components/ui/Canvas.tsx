@@ -109,7 +109,7 @@ function Topbar({
                     onClick={() => setSelectedTool("arrow")}
                     activated={selectedTool === "arrow"} />
 
-                <IconButton icon={<Eraser className="size-3.5" fill={`${selectedTool == "eraser" ? "white" : "#232329"}`} strokeWidth="1.5" />}
+                <IconButton icon={<Eraser className="size-3.5" strokeWidth="1.5" />}
                     onClick={() => setSelectedTool("eraser")}
                     activated={selectedTool === "eraser"} />
             </div>

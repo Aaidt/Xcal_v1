@@ -126,7 +126,7 @@ export default function Dashboard() {
               className="hover:bg-foreground/5 duration-200 bg-foreground/10 
                 transition-all rounded-full p-2 cursor-pointer"
             >
-              <User />
+              <User strokeWidth="1.5" />
             </button>
 
             {isOpen && (
