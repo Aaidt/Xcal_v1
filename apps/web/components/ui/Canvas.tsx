@@ -12,40 +12,18 @@ export type Tool = "pencil" | "circle" | "rect" | "line" | "arrow" | "pointer" |
 export default function Canvas({
     socket,
     roomId,
-    link
+    link,
+    visitors
 }: {
     socket: WebSocket,
     roomId: string,
-    link: string
+    link: string,
+    visitors: number | null
 }) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const [selectedTool, setSelectedTool] = useState<Tool>("pencil")
     const [game, setGame] = useState<Game>();
-    const [visitors, setVisitors] = useState<number>(0)
 
-    useEffect(() => {
-        if(!socket) return;
-
-        function handleMessage(event: MessageEvent){
-            try{
-                const parsedData = JSON.parse(event.data);
-
-                if(parsedData.type === "visitor_count"){
-                    console.log("Visitor count updated: ", parsedData.visitors);
-                    setVisitors(visitors);
-                }
-                
-            }catch(err){
-                console.log("Error is: " + err);
-            }
-            socket.addEventListener("message", handleMessage)
-
-            return () => {
-                socket.removeEventListener("message", handleMessage)
-            }
-        }
-    }, [])
-    
     const token = localStorage.getItem("Authorization");
     
     useEffect(() => {
@@ -85,7 +63,7 @@ function Topbar({
     selectedTool: Tool,
     setSelectedTool: (s: Tool) => void,
     link: string,
-    visitors: number
+    visitors: number | null
 }) {
     return (
         <div>
@@ -130,7 +108,7 @@ function Topbar({
                 <div className="text-white cursor-pointer flex items-center gap-2 text-sm rounded-md px-3 py-2 
                     hover:underline hover:underline-offset-3 duration-200">
                     <Users strokeWidth="1.5" size="20" />
-                    People ({visitors})
+                    People ({visitors !== null ? visitors : "..."})
                 </div>
 
             </div>

@@ -183,7 +183,11 @@ wss.on("connection", function connect(ws, request) {
 
     ws.on("close", () => {
         console.log(`WebSocket closed for userId: ${user.userId}`);
-        users = users.filter(u => u.ws !== ws);
+        
+        const index = users.findIndex(u => u.ws === ws);
+        if (index !== -1) {
+            users.splice(index, 1);
+        }
 
         user.rooms.forEach(roomId => {
             roomVisitors[roomId]?.delete(user.userId);

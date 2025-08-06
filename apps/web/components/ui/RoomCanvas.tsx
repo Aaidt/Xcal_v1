@@ -11,6 +11,7 @@ export default function RoomCanvas({ roomId, link } :
     }){
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const [visitors, setVisitors] = useState<number | null>(null)
     const wsRef = useRef<WebSocket | null>(null);
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL as string;
     const router = useRouter();
@@ -53,6 +54,11 @@ export default function RoomCanvas({ roomId, link } :
                 if(data.status === "Success"){
                     setLoading(false);
                 }
+
+                if(data.type === "visitor_count"){
+                    console.log("Visitor count updated: ", data.visitors);
+                    setVisitors(data.visitors);
+                }
             }catch(err){
                 console.log("Error is: " + err)
             }
@@ -65,8 +71,8 @@ export default function RoomCanvas({ roomId, link } :
         }
 
         return () => {
-            ws.close();
             ws.send(JSON.stringify({ type: "leave_room", roomId }))
+            ws.close();
             setSocket(null);
             toast.warn("You have left the room!")
         }
@@ -84,6 +90,6 @@ export default function RoomCanvas({ roomId, link } :
         </div>
     }
 
-    return <Canvas socket={socket} roomId={roomId} link={link} />
+    return <Canvas socket={socket} roomId={roomId} link={link} visitors={visitors}/>
 
 }
