@@ -1,1 +1,1 @@
-{"root":["./src/authmiddleware.ts","./src/index.ts","./src/routes/authrouter.ts","./src/routes/roomrouter.ts"],"version":"5.8.3"}
+{"root":["./src/authMiddleware.ts","./src/index.ts","./src/routes/authRouter.ts","./src/routes/roomRouter.ts"],"errors":true,"version":"5.8.3"}
